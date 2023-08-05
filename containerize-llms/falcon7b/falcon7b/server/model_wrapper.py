@@ -77,7 +77,7 @@ class ModelWrapper:
         # don't retry failed loads
         return (
             not self._load_lock.locked()
-            and not self._status == ModelWrapper.Status.FAILED
+            and self._status != ModelWrapper.Status.FAILED
             and not self.ready
         )
 
@@ -146,10 +146,8 @@ class ModelWrapper:
             self._predict_lock.acquire()
             return self._model.predict(payload)  # type: ignore
         except Exception:
-            response = {}
             logging.exception("Exception while running predict")
-            response["error"] = {"traceback": traceback.format_exc()}
-            return response
+            return {"error": {"traceback": traceback.format_exc()}}
         finally:
             self._predict_lock.release()
 
@@ -188,10 +186,10 @@ def _signature_accepts_keyword_arg(signature: inspect.Signature, kwarg: str) -> 
 
 
 def _signature_accepts_kwargs(signature: inspect.Signature) -> bool:
-    for param in signature.parameters.values():
-        if param.kind == inspect.Parameter.VAR_KEYWORD:
-            return True
-    return False
+    return any(
+        param.kind == inspect.Parameter.VAR_KEYWORD
+        for param in signature.parameters.values()
+    )
 
 
 def _elapsed_ms(since_micro_seconds: float) -> int:

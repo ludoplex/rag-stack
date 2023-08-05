@@ -29,7 +29,7 @@ def get_selected_llm() -> LLM:
     elif llm_type == "gpt4":
         return GPT("gpt-4")
     else:
-        raise Exception("Unknown LLM type: " + llm_type)
+        raise Exception(f"Unknown LLM type: {llm_type}")
 
 
 class Gpt4AllLLM(LLM):
@@ -57,9 +57,7 @@ class Gpt4AllLLM(LLM):
             )
             for doc in documents
         ]
-        result = chain.run(input_documents=docs, question=question, callbacks=callbacks)
-
-        return result
+        return chain.run(input_documents=docs, question=question, callbacks=callbacks)
 
 
 class Falcon7BLLM(LLM):
@@ -98,11 +96,7 @@ class GPT(LLM):
         self.model_name = model_name
 
     async def ask(self, documents: List[PsychicDocument], question: str) -> str:
-        context_str = ""
-
-        for doc in documents:
-            context_str += f"{doc.title}: {doc.content}\n\n"
-
+        context_str = "".join(f"{doc.title}: {doc.content}\n\n" for doc in documents)
         prompt = (
             "Context: \n"
             "---------------------\n"

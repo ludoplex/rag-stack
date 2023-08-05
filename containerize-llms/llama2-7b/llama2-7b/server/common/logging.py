@@ -31,13 +31,10 @@ def setup_logging() -> None:
         logger.setLevel(LEVEL)
         logger.propagate = False
 
-        setup = False
-
-        # let's not thrash the handlers unnecessarily
-        for handler in logger.handlers:
-            if handler.name == JSON_LOG_HANDLER.name:
-                setup = True
-
+        setup = any(
+            handler.name == JSON_LOG_HANDLER.name
+            for handler in logger.handlers
+        )
         if not setup:
             logger.handlers.clear()
             logger.addHandler(JSON_LOG_HANDLER)

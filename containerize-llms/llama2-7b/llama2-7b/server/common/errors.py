@@ -51,7 +51,7 @@ class ModelNotReady(RuntimeError):
         self.model_name = model_name
         self.error_msg = f"Model with name {self.model_name} is not ready."
         if detail:
-            self.error_msg = self.error_msg + " " + detail
+            self.error_msg = f"{self.error_msg} {detail}"
 
     def __str__(self):
         return self.error_msg

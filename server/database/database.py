@@ -32,8 +32,7 @@ class Database:
             try:
                 contents = await file.read()
                 res = self.supabase.storage.from_(app_config.app_id).upload(
-                    path="/uploads/{}".format(file.filename),
-                    file=contents,
+                    path=f"/uploads/{file.filename}", file=contents
                 )
                 # Reset file cursor for any other file readers
                 await file.seek(0)
@@ -53,7 +52,7 @@ class Database:
 
                 with open(file_name, "wb+") as f:
                     res = self.supabase.storage.from_(app_config.app_id).download(
-                        path="uploads/{}".format(file_name)
+                        path=f"uploads/{file_name}"
                     )
                     file = UploadFile(file=io.BytesIO(res), filename=file_name)
 
@@ -66,7 +65,7 @@ class Database:
 
     async def get_file_signed_url(self, app_config: AppConfig, file_name: str) -> str:
         res = self.supabase.storage.from_(app_config.app_id).create_signed_url(
-            path="uploads/{}".format(file_name), expires_in=3600
+            path=f"uploads/{file_name}", expires_in=3600
         )
         return res["signedURL"]
 

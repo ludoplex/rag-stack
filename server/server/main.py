@@ -69,8 +69,7 @@ async def upsert_files(
         await db.upsert(config, files)
         docs = await FileConnector(files).load()
         success = await vector_store.upsert(docs, config)
-        response = UpsertFilesResponse(success=success)
-        return response
+        return UpsertFilesResponse(success=success)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail=str(e))

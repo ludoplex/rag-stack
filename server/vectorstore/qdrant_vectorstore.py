@@ -71,12 +71,11 @@ class QdrantVectorStore(VectorStore):
 
         for doc in split_docs:
             doc_id = None
+            doc_id = doc.metadata["id"]
             if doc.metadata["id"] not in seen_docs:
-                doc_id = doc.metadata["id"]
                 seen_docs[doc.metadata["id"]] = 1
                 chunk_id = uuid.uuid5(uuid.NAMESPACE_DNS, f"{doc_id}_1")
             else:
-                doc_id = doc.metadata["id"]
                 seen_docs[doc.metadata["id"]] += 1
                 chunk_id = uuid.uuid5(
                     uuid.NAMESPACE_DNS, f"{doc_id}_{seen_docs[doc.metadata['id']]}"
