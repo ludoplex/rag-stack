@@ -19,10 +19,7 @@ def retry(
             if i >= count:
                 raise exc
 
-            if i == 0:
-                msg = f"{msg} Retrying..."
-            else:
-                msg = f"{msg} Retrying. Retry count: {i}"
+            msg = f"{msg} Retrying..." if i == 0 else f"{msg} Retrying. Retry count: {i}"
             logging_fn(msg)
             i += 1
             time.sleep(gap_seconds)

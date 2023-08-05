@@ -42,7 +42,7 @@ def cpu_count():
                 quota = int(f.read())
             with open("/sys/fs/cgroup/cpu,cpuacct/cpu.cfs_period_us") as f:
                 period = int(f.read())
-            cgroups_count = int(quota / period)
+            cgroups_count = quota // period
             if cgroups_count > 0:
                 count = min(count, cgroups_count)
         except Exception:

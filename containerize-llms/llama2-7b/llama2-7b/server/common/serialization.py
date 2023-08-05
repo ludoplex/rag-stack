@@ -13,7 +13,7 @@ def truss_msgpack_encoder(
     if isinstance(obj, datetime):
         r = obj.isoformat()
         if r.endswith("+00:00"):
-            r = r[:-6] + "Z"
+            r = f"{r[:-6]}Z"
         return {b"__dt_datetime_iso__": True, b"data": r}
     elif isinstance(obj, date):
         r = obj.isoformat()

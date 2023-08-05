@@ -129,7 +129,7 @@ class Psychic:
         self.secret_key = secret_key
 
     def handle_http_error(self, response: requests.Response):
-        if response.status_code == 401 or response.status_code == 403:
+        if response.status_code in {401, 403}:
             raise Exception("Unauthorized: Invalid or missing secret key")
         try:
             data = response.json()
@@ -163,10 +163,10 @@ class Psychic:
             "page_size": page_size,
         }
         response = requests.post(
-            self.api_url + "get-documents",
+            f"{self.api_url}get-documents",
             json=body,
             headers={
-                "Authorization": "Bearer " + self.secret_key,
+                "Authorization": f"Bearer {self.secret_key}",
                 "Accept": "application/json",
             },
         )
@@ -192,12 +192,12 @@ class Psychic:
         }
 
         response = requests.post(
-            self.api_url + "get-connections",
+            f"{self.api_url}get-connections",
             json={
                 "filter": filter,
             },
             headers={
-                "Authorization": "Bearer " + self.secret_key,
+                "Authorization": f"Bearer {self.secret_key}",
                 "Accept": "application/json",
             },
         )
@@ -244,10 +244,10 @@ class Psychic:
             },
         }
         response = requests.post(
-            self.api_url + "add-section-filter",
+            f"{self.api_url}add-section-filter",
             json=body,
             headers={
-                "Authorization": "Bearer " + self.secret_key,
+                "Authorization": f"Bearer {self.secret_key}",
                 "Accept": "application/json",
             },
         )
@@ -278,10 +278,10 @@ class Psychic:
             body["oldest_timestamp"] = oldest_timestamp
 
         response = requests.post(
-            self.api_url + "get-conversations",
+            f"{self.api_url}get-conversations",
             json=body,
             headers={
-                "Authorization": "Bearer " + self.secret_key,
+                "Authorization": f"Bearer {self.secret_key}",
                 "Accept": "application/json",
             },
         )
@@ -313,10 +313,10 @@ class Psychic:
             body["oldest_timestamp"] = oldest_timestamp
 
         response = requests.post(
-            self.api_url + "get-conversations",
+            f"{self.api_url}get-conversations",
             json=body,
             headers={
-                "Authorization": "Bearer " + self.secret_key,
+                "Authorization": f"Bearer {self.secret_key}",
                 "Accept": "application/json",
             },
         )
@@ -347,10 +347,10 @@ class Psychic:
         }
 
         response = requests.post(
-            self.api_url + "get-tickets",
+            f"{self.api_url}get-tickets",
             json=body,
             headers={
-                "Authorization": "Bearer " + self.secret_key,
+                "Authorization": f"Bearer {self.secret_key}",
                 "Accept": "application/json",
             },
         )
